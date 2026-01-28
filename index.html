@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jessie Math - 怎樣解題(二)</title>
+
+    <!-- ✅ 快取連結預覽（請放在 <head> 裡） -->
+    <meta name="description" content="© 2025–2026 Jessie Math 捷析老師. All rights reserved.">
+    <!-- ✅ LINE / FB 預覽用 -->
+    <meta property="og:title" content="Jessie Math  - 怎樣解題(二)">
+    <meta property="og:description" content="© 2025–2026 Jessie Math 捷析老師. All rights reserved.">
+    <meta property="og:type" content="website">
+
+    <!-- ✅ 預覽圖片-->
+    <meta property="og:image" content="g6-u14.png">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="1536">
+    <meta property="og:image:alt" content="Jessie Math 遊戲封面">
+
+    <!-- ✅ 有些平台會參考 -->
+    <link rel="image_src" href="g6-u14.png">
+
+    <!-- ✅ Twitter / X（可用同一張圖） -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Jessie Math  - 怎樣解題(二)">
+    <meta name="twitter:description" content="© 2025–2026 Jessie Math 捷析老師. All rights reserved.">
+    <meta name="twitter:image" content="g6-u14.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-yellow: #FFD700;
+            --brand-blue: #2C3E50;
+            --accent-purple: #706fd3;
+            --btn-pause: #ff9f43;
+            --btn-redo: #54a0ff;
+            --btn-menu: #576574;
+
+            --bg-glass: rgba(255,255,255,0.92);
+            --line: rgba(0,0,0,0.08);
+        }
+
+        *{ box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: "Microsoft JhengHei", sans-serif;
+            background-color: #f9f9f9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Hero Area */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .brand-zone { display: flex; align-items: center; }
+
+        .logo-circle {
+            width: 50px; height: 50px;
+            background: var(--primary-yellow);
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            margin-right: 15px;
+            flex: 0 0 auto;
+        }
+
+        .logo-circle img { width: 90%; background: transparent; }
+
+        .brand-name { font-size: 24px; font-weight: bold; color: var(--brand-blue); }
+
+        .nav-buttons { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+
+        .nav-btn {
+            text-decoration: none; padding: 8px 15px; border-radius: 20px;
+            border: 1px solid #ddd; color: #333; font-size: 14px;
+            display: flex; align-items: center; gap: 5px; transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-purple { border-color: var(--accent-purple); color: var(--accent-purple); }
+
+        /* Screens */
+        .screen {
+            display: none;
+            width: min(850px, calc(100% - 24px));
+            margin: 24px auto;
+            padding: 26px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .active { display: block; }
+
+        .btn-main {
+            background: var(--brand-blue); color: white;
+            padding: 12px 30px; border: none; border-radius: 25px;
+            font-size: 18px; cursor: pointer; margin: 10px; transition: 0.2s;
+            width: auto;
+            max-width: 100%;
+        }
+        .btn-main:hover { transform: scale(1.05); }
+
+        /* 模式選擇按鈕 */
+        .mode-container { display: flex; justify-content: center; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
+        .mode-btn {
+            padding: 10px 20px; border-radius: 15px; border: 2px solid #ddd;
+            background: white; cursor: pointer; font-weight: bold; transition: 0.3s;
+        }
+        .mode-btn.selected { border-color: var(--brand-blue); background: #eef5ff; color: var(--brand-blue); }
+
+        /* 排行榜 */
+        .leaderboard-container { margin-top: 30px; background: #fcfcfc; border-radius: 15px; padding: 15px; border: 1px dashed #ccc; overflow-x: auto; }
+        #leaderboard { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; min-width: 520px; }
+        #leaderboard th, #leaderboard td { padding: 10px; border-bottom: 1px solid #eee; }
+
+        /* 遊戲按鈕控制 */
+        .game-controls { display: flex; justify-content: center; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
+        .control-btn {
+            flex: 1; max-width: 150px; min-width: 140px;
+            padding: 12px 0; border-radius: 50px;
+            border: none; color: white; font-weight: bold; font-size: 16px;
+            cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.3s;
+        }
+        .btn-p { background-color: var(--btn-pause); }
+        .btn-r { background-color: var(--btn-redo); }
+        .btn-m { background-color: var(--btn-menu); }
+        .control-btn:hover { transform: translateY(-3px); filter: brightness(1.1); }
+
+        .stats-bar {
+            display: flex; justify-content: space-around;
+            background: #f0f3f6;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 14px; /* ✅ 留出回饋區 */
+            border: 2px solid #e0e0e0;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* ✅ 作答區回饋（顯示在題目/選項上方，不用 alert） */
+        .feedback-bar{
+            margin: 0 0 14px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            display: none;
+            text-align: left;
+            line-height: 1.5;
+            font-size: 15px;
+        }
+        .feedback-bar.show{ display:block; }
+        .feedback-ok{
+            border-color: rgba(39,174,96,0.35);
+            background: rgba(39,174,96,0.08);
+        }
+        .feedback-bad{
+            border-color: rgba(231,76,60,0.35);
+            background: rgba(231,76,60,0.08);
+        }
+        .feedback-title{
+            font-weight: 800;
+            margin-bottom: 4px;
+            display:flex;
+            align-items:center;
+            gap:8px;
+        }
+        .feedback-detail{
+            color: #334155;
+            font-size: 14px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .option-btn {
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            cursor: pointer;
+            background: white;
+            width: 100%;
+        }
+        .option-btn:hover { background: #eef5ff; }
+
+        /* ✅ Footer */
+        footer{
+            margin-top: auto;
+            padding: 18px 12px 24px;
+        }
+        .footer-pill{
+            width: min(980px, calc(100% - 24px));
+            margin: 0 auto;
+            background: var(--bg-glass);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.08);
+            backdrop-filter: blur(10px);
+        }
+        .footer-left, .footer-right{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            min-width: 0;
+        }
+        .footer-dot{
+            width:10px; height:10px;
+            border-radius:50%;
+            background: var(--primary-yellow);
+            box-shadow: 0 0 0 4px rgba(255,215,0,0.18);
+            flex: 0 0 auto;
+        }
+        .footer-copy{
+            font-size: 13px;
+            color: #334155;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .footer-icon{
+            width:28px; height:28px;
+            border-radius: 10px;
+            display:flex; align-items:center; justify-content:center;
+            background: rgba(44,62,80,0.08);
+            color: var(--brand-blue);
+            flex: 0 0 auto;
+        }
+        .footer-tagline{
+            font-size: 13px;
+            color: #334155;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ✅ RWD Breakpoints */
+        @media (max-width: 900px){
+            .screen{ padding: 22px; }
+            .brand-name{ font-size: 22px; }
+            #leaderboard{ min-width: 480px; }
+        }
+
+        @media (max-width: 640px){
+            header{ padding: 10px 12px; }
+            .brand-name{ font-size: 20px; }
+            .nav-btn{ padding: 8px 12px; font-size: 13px; }
+            .options-grid{ grid-template-columns: 1fr; }
+            .control-btn{ max-width: none; min-width: 160px; }
+            .footer-pill{
+                border-radius: 18px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .footer-copy, .footer-tagline{ width: 100%; }
+        }
+
+        @media (max-width: 380px){
+            .logo-circle{ width: 44px; height: 44px; margin-right: 10px; }
+            .btn-main{ font-size: 16px; padding: 11px 18px; }
+            .option-btn{ font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="brand-zone">
+        <div class="logo-circle"><img src="JESSIEMATH-Q.png" alt="Jessie Math"></div>
+        <div class="brand-name">Jessie Math</div>
+    </div>
+    <div class="nav-buttons">
+        <a href="https://jessiemath0703-chu.github.io/website2/" class="nav-btn"><i class="fas fa-home"></i> 首頁</a>
+        <a href="https://jessiemath0703-chu.github.io/Game-Lobby/" class="nav-btn"><i class="fas fa-gamepad"></i> 遊戲大廳</a>
+        <a href="https://jessiemath0703-chu.github.io/Game-Lobby/#g6-u14" class="nav-btn btn-purple"><i class="fas fa-undo"></i> 六年級怎樣解題(二)</a>
+    </div>
+</header>
+
+<div id="start-screen" class="screen active">
+    <h2>六年級 怎樣解題(二)</h2>
+    <input type="text" id="player-name" placeholder="請輸入你的名字" style="padding: 12px; width: min(280px, 100%); font-size: 16px; border-radius: 10px; border: 1px solid #ccc; margin-bottom: 20px;">
+    <div class="rules" style="text-align: left; background: #fffbe6; padding: 20px; border-radius: 15px; border-left: 5px solid var(--primary-yellow);">
+        <p><strong>🌟 遊戲規則：</strong></p>
+        <ul style="line-height: 1.6;">
+            <li>✅ <strong>答對：</strong> 時間加 5 秒，累積 Combo 分數更高。</li>
+            <li>❌ <strong>答錯：</strong> 時間扣 5 秒，Combo 中斷。</li>
+            <li>🏆 <strong>紀錄：</strong> 排行榜將記錄您的姓名、關卡與挑戰模式。</li>
+        </ul>
+    </div>
+    <button class="btn-main" onclick="goToMenu()">進入挑戰</button>
+</div>
+
+<div id="menu-screen" class="screen">
+    <h2>選擇關卡與模式</h2>
+    <div id="welcome-msg" style="margin-bottom: 15px; font-weight: bold;"></div>
+
+    <div style="background: #fdfdfd; padding: 15px; border-radius: 10px; border: 1px solid #eee;">
+        <p style="margin-top: 0; font-weight: bold; color: #e67e22;">第一步：選擇挑戰難度</p>
+        <div class="mode-container">
+            <button class="mode-btn selected" id="mode-easy" onclick="selectMode('基礎', 120)">基礎 (120s)</button>
+            <button class="mode-btn" id="mode-normal" onclick="selectMode('進階', 90)">進階 (90s)</button>
+            <button class="mode-btn" id="mode-hard" onclick="selectMode('魔王', 60)">魔王 (60s)</button>
+        </div>
+    </div>
+
+    <p style="margin-top: 20px; font-weight: bold; color: #2980b9;">第二步：選擇題目關卡</p>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+        <button class="btn-main" style="width: min(80%, 520px); background: #ff7f50;" onclick="startGame('rate', '第一關：速率問題')">第一關：速率問題</button>
+        <button class="btn-main" style="width: min(80%, 520px); background: #6a89cc;" onclick="startGame('age', '第二關：年齡問題')">第二關：年齡問題</button>
+        <button class="btn-main" style="width: min(80%, 520px); background: #78e08f;" onclick="startGame('avg', '第三關：平均問題')">第三關：平均問題</button>
+    </div>
+
+    <div class="leaderboard-container">
+        <h3>🏆 前十名榮譽榜</h3>
+        <table id="leaderboard"></table>
+    </div>
+</div>
+
+<div id="game-screen" class="screen">
+    <div class="stats-bar">
+        <div>⏳ <span id="timer">60</span>s</div>
+        <div>⭐ <span id="score">0</span> 分</div>
+        <div style="color: #ff4757; font-weight: bold;" id="combo-text">Combo x0</div>
+    </div>
+
+    <!-- ✅ 回饋直接顯示在作答區（題目/選項上方） -->
+    <div id="feedback" class="feedback-bar" aria-live="polite"></div>
+
+    <div id="question-area">
+        <h3 id="question-text" style="min-height: 50px;">題目載入中...</h3>
+        <div class="options-grid" id="options"></div>
+    </div>
+    <div class="game-controls">
+        <button class="control-btn btn-p" onclick="pauseGame()"><i class="fas fa-pause"></i> 暫停</button>
+        <button class="control-btn btn-r" onclick="restartLevel()"><i class="fas fa-redo"></i> 重新</button>
+        <button class="control-btn btn-m" onclick="exitToMenu()"><i class="fas fa-list"></i> 選單</button>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-pill">
+        <div class="footer-left">
+            <div class="footer-dot" aria-hidden="true"></div>
+            <div class="footer-copy">© 2025–2026 Jessie Math 捷析老師. All rights reserved.</div>
+        </div>
+        <div class="footer-right">
+            <div class="footer-icon" aria-hidden="true"><i class="fas fa-compass"></i></div>
+            <div class="footer-tagline">數學不迷路，Jessie 帶你走向理解。</div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    let playerName = "";
+    let score = 0;
+    let timeLeft = 60;
+    let baseTime = 120;
+    let currentModeName = "基礎";
+    let combo = 0;
+    let timerId;
+    let currentCategory = "";
+    let currentLevelName = "";
+
+    let roundDeck = [];
+    let roundIndex = 0;
+    let currentQuestion = null;
+
+    // ✅ 回饋顯示控制
+    let feedbackTimer = null;
+    const FEEDBACK_MS = 950; // 顯示多久後自動進下一題
+
+    function showFeedback(type, title, detail){
+        const box = document.getElementById('feedback');
+        box.className = "feedback-bar show " + (type === "ok" ? "feedback-ok" : "feedback-bad");
+        box.innerHTML = `
+            <div class="feedback-title">${type === "ok" ? "✅" : "❌"} ${title}</div>
+            <div class="feedback-detail">${detail}</div>
+        `;
+    }
+
+    function clearFeedback(){
+        const box = document.getElementById('feedback');
+        box.className = "feedback-bar";
+        box.innerHTML = "";
+    }
+
+    function lockOptions(lock){
+        document.querySelectorAll('.option-btn').forEach(b => b.disabled = !!lock);
+    }
+
+    function randInt(min, max){
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    function shuffle(arr){
+        const a = arr.slice();
+        for(let i=a.length-1;i>0;i--){
+            const j = Math.floor(Math.random() * (i+1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+    function uniqueOptions(correct, makeWrongFn, count=4){
+        const set = new Set([correct]);
+        let guard = 0;
+        while(set.size < count && guard < 200){
+            set.add(makeWrongFn());
+            guard++;
+        }
+        return shuffle(Array.from(set));
+    }
+    function buildMCQ(q, correct, wrongGen){
+        const opts = uniqueOptions(correct, wrongGen, 4);
+        return { q, a: opts, c: opts.indexOf(correct) };
+    }
+
+    const baseQuestions = {
+        rate: [
+            { q:"小可與小樂走路速率分別為 48 公尺/分與 60 公尺/分，同向同地出發，30 分鐘後相距幾公尺？", a:["360 公尺","120 公尺","180 公尺","240 公尺"], c:0 },
+            { q:"甲乙兩地相距 1296 公尺，小可 48 公尺/分，小樂 60 公尺/分，相向而行，幾分鐘後相遇？", a:["10 分鐘","12 分鐘","15 分鐘","18 分鐘"], c:1 },
+            { q:"平面電扶梯速率 0.5 公尺/秒，檢修員站著不動，10 秒後前進幾公尺？", a:["5 公尺","7 公尺","10 公尺","12 公尺"], c:0 },
+            { q:"臺灣電扶梯速率 30 公尺/分，香港最快電扶梯速率 45 公尺/分。同樣搭 36 秒，兩者前進距離差幾公尺？", a:["6 公尺","7.5 公尺","9 公尺","12 公尺"], c:1 }
+        ],
+        age: [
+            { q:"爺爺 64 歲，小奇 14 歲。幾年前爺爺年齡是小奇的 6 倍？", a:["4 年前","2 年前","6 年前","10 年前"], c:0 },
+            { q:"爸爸 42 歲，小奇 14 歲。當爸爸年齡是小奇 5 倍時，小奇幾歲？", a:["7 歲","8 歲","9 歲","10 歲"], c:0 },
+            { q:"姐姐與妹妹差 3 歲，兩人年齡和 25 歲，姐姐今年幾歲？", a:["11 歲","14 歲","12 歲","15 歲"], c:1 }
+        ],
+        avg: [
+            { q:"前 4 次小考平均 88 分，第 5 次要考幾分，五次平均才會是 90 分？", a:["92 分","95 分","98 分","100 分"], c:2 },
+            { q:"小吉花 220 元，小利花 190 元，三人平均 180 元，小順花幾元？", a:["130 元","150 元","180 元","200 元"], c:0 },
+            { q:"週一 320 人、週二 270 人，加上週三後三天平均 310 人，週三幾人？", a:["340 人","310 人","300 人","350 人"], c:0 }
+        ]
+    };
+
+    function generateRateQuestions(n=18){
+        const list = [];
+        for(let i=0;i<Math.ceil(n/4);i++){
+            const v1 = randInt(30, 70), v2 = randInt(30, 70);
+            if(v1 === v2) continue;
+            const t = randInt(5, 40);
+            const d = Math.abs(v1 - v2) * t;
+            const q = `兩人同地同向出發，速率分別為 ${v1} 公尺/分與 ${v2} 公尺/分，${t} 分鐘後相距幾公尺？`;
+            list.push(buildMCQ(q, `${d} 公尺`, () => `${d + randInt(-6, 8) * 10} 公尺`));
+        }
+        for(let i=0;i<Math.ceil(n/4);i++){
+            const v1 = randInt(30, 80), v2 = randInt(20, 80);
+            const t = randInt(4, 20);
+            const d = (v1 + v2) * t;
+            const q = `兩人同地反向同時出發，速率分別為 ${v1} 公尺/分與 ${v2} 公尺/分，${t} 分鐘後相距幾公尺？`;
+            list.push(buildMCQ(q, `${d} 公尺`, () => `${d + randInt(-7, 9) * 10} 公尺`));
+        }
+        for(let i=0;i<Math.ceil(n/4);i++){
+            const v1 = randInt(30, 70), v2 = randInt(30, 70);
+            const t = randInt(6, 18);
+            const dist = (v1 + v2) * t;
+            const q = `甲乙兩地相距 ${dist} 公尺，甲以 ${v1} 公尺/分、乙以 ${v2} 公尺/分 相向而行，幾分鐘後相遇？`;
+            list.push(buildMCQ(q, `${t} 分鐘`, () => `${t + randInt(-4, 5)} 分鐘`));
+        }
+        for(let i=0;i<Math.ceil(n/4);i++){
+            const belt = randInt(20, 60), walk = randInt(30, 70);
+            const sec2 = 12 * randInt(1, 5);
+            const same = Math.random() < 0.5;
+            const speed = same ? (belt + walk) : Math.abs(walk - belt);
+            const d2 = (speed * sec2) / 60;
+            const q = `電扶梯速率 ${belt} 公尺/分，檢修員走路速率 ${walk} 公尺/分，${same ? "同方向" : "反方向"}走 ${sec2} 秒，前進幾公尺？`;
+            list.push(buildMCQ(q, `${d2} 公尺`, () => `${d2 + randInt(-3, 4)} 公尺`));
+        }
+        return list.slice(0, n);
+    }
+
+    function generateAgeQuestions(n=18){
+        const list = [];
+        for(let i=0;i<Math.ceil(n/2);i++){
+            const k = randInt(3, 6), x = randInt(2, 8), b = randInt(10, 16);
+            const a = k*(b - x) + x;
+            const q = `甲今年 ${a} 歲，乙今年 ${b} 歲。幾年前甲的年齡是乙的 ${k} 倍？`;
+            list.push(buildMCQ(q, `${x} 年前`, () => `${x + randInt(-3, 4)} 年前`));
+        }
+        for(let i=0;i<Math.ceil(n/2);i++){
+            const k = randInt(2, 4), x = randInt(2, 10), b = randInt(8, 16);
+            const a = k*(b + x) - x;
+            const q = `甲今年 ${a} 歲，乙今年 ${b} 歲。幾年後甲的年齡會是乙的 ${k} 倍？`;
+            list.push(buildMCQ(q, `${x} 年後`, () => `${x + randInt(-4, 5)} 年後`));
+        }
+        return list.slice(0, n);
+    }
+
+    function generateAvgQuestions(n=18){
+        const list = [];
+        for(let i=0;i<Math.ceil(n/2);i++){
+            const m = randInt(3, 5);
+            const avg1 = randInt(80, 92);
+            const avg2 = avg1 + randInt(1, 4);
+            const sum1 = m * avg1;
+            const targetSum = (m+1) * avg2;
+            const x = targetSum - sum1;
+            const q = `前 ${m} 次小考平均 ${avg1} 分，第 ${m+1} 次要考幾分，${m+1} 次平均才會是 ${avg2} 分？`;
+            list.push(buildMCQ(q, `${x} 分`, () => `${x + randInt(-8, 10)} 分`));
+        }
+        for(let i=0;i<Math.ceil(n/2);i++){
+            const a = randInt(250, 380), b = randInt(250, 380), avg = randInt(280, 360);
+            const c = avg * 3 - a - b;
+            const q = `週一 ${a} 人、週二 ${b} 人，加入週三後三天平均 ${avg} 人，週三幾人？`;
+            list.push(buildMCQ(q, `${c} 人`, () => `${c + randInt(-30, 40)} 人`));
+        }
+        return list.slice(0, n);
+    }
+
+    let sessionQuestions = { rate: [], age: [], avg: [] };
+    function rebuildSessionQuestions(){
+        sessionQuestions.rate = baseQuestions.rate.concat(generateRateQuestions(18));
+        sessionQuestions.age  = baseQuestions.age.concat(generateAgeQuestions(18));
+        sessionQuestions.avg  = baseQuestions.avg.concat(generateAvgQuestions(18));
+    }
+
+    function selectMode(name, time) {
+        currentModeName = name;
+        baseTime = time;
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('selected'));
+        if(name === '基礎') document.getElementById('mode-easy').classList.add('selected');
+        if(name === '進階') document.getElementById('mode-normal').classList.add('selected');
+        if(name === '魔王') document.getElementById('mode-hard').classList.add('selected');
+    }
+
+    function goToMenu() {
+        playerName = (document.getElementById('player-name').value || "").trim();
+        if(!playerName) { alert("請輸入名字！"); return; }
+        showScreen('menu-screen');
+        document.getElementById('welcome-msg').innerText = "加油，" + playerName + "！";
+        updateLeaderboard();
+    }
+
+    function startGame(category, levelName) {
+        currentCategory = category;
+        currentLevelName = levelName;
+        score = 0;
+        timeLeft = baseTime;
+        combo = 0;
+
+        rebuildSessionQuestions();
+        refillRoundDeck();
+
+        showScreen('game-screen');
+        clearFeedback();
+        updateStats();
+        nextQuestion();
+        startTimer();
+    }
+
+    function startTimer() {
+        clearInterval(timerId);
+        timerId = setInterval(() => {
+            timeLeft--;
+            document.getElementById('timer').innerText = timeLeft;
+            if(timeLeft <= 0) endGame();
+        }, 1000);
+    }
+
+    function refillRoundDeck(){
+        const pool = sessionQuestions[currentCategory] || [];
+        roundDeck = shuffle(pool);
+        roundIndex = 0;
+    }
+
+    function nextQuestion() {
+        const pool = sessionQuestions[currentCategory];
+        if(!pool || pool.length === 0) {
+            document.getElementById('question-text').innerText = "題庫載入失敗，請回選單再試一次。";
+            document.getElementById('options').innerHTML = "";
+            return;
+        }
+
+        if(roundIndex >= roundDeck.length){
+            refillRoundDeck();
+        }
+
+        currentQuestion = roundDeck[roundIndex++];
+        document.getElementById('question-text').innerText = currentQuestion.q;
+
+        const optionsDiv = document.getElementById('options');
+        optionsDiv.innerHTML = "";
+        currentQuestion.a.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(index, btn);
+            optionsDiv.appendChild(btn);
+        });
+
+        // 題目出現時清掉前一次回饋
+        clearFeedback();
+        lockOptions(false);
+    }
+
+    // ✅ 回饋呈現在作答區：答對/答錯顯示後，自動進下一題
+    function checkAnswer(selected, btnEl) {
+        if(!currentQuestion) return;
+
+        lockOptions(true);
+        if(feedbackTimer) clearTimeout(feedbackTimer);
+
+        const correctIndex = currentQuestion.c;
+        const correctText = currentQuestion.a[correctIndex];
+
+        // 小提示：點到的按鈕稍微標記（不改版，只加 inline）
+        btnEl.style.outline = "3px solid rgba(44,62,80,0.15)";
+        btnEl.style.transform = "translateY(-1px)";
+
+        if(selected === correctIndex) {
+            combo++;
+            score += (10 * combo);
+            timeLeft += 5;
+            updateStats();
+
+            showFeedback(
+                "ok",
+                "答對！",
+                `+5 秒｜Combo x${combo}｜目前得分：${score}`
+            );
+        } else {
+            combo = 0;
+            timeLeft -= 5;
+            if(timeLeft < 0) timeLeft = 0;
+            updateStats();
+
+            showFeedback(
+                "bad",
+                "答錯！",
+                `正確答案是：<strong>${correctText}</strong> ｜ -5 秒｜Combo 歸零`
+            );
+        }
+
+        feedbackTimer = setTimeout(() => {
+            nextQuestion();
+        }, FEEDBACK_MS);
+    }
+
+    function updateStats() {
+        document.getElementById('score').innerText = score;
+        document.getElementById('combo-text').innerText = "Combo x" + combo;
+        document.getElementById('timer').innerText = timeLeft;
+    }
+
+    function endGame() {
+        clearInterval(timerId);
+        if(feedbackTimer) clearTimeout(feedbackTimer);
+        alert("時間到！挑戰結束。\n得分: " + score);
+        saveScore(playerName, score, currentLevelName, currentModeName);
+        exitToMenu();
+    }
+
+    function saveScore(name, score, level, mode) {
+        let scores = JSON.parse(localStorage.getItem('jessieMath_v2_scores') || "[]");
+        scores.push({name, score, level, mode, date: new Date().toLocaleDateString()});
+        scores.sort((a,b) => b.score - a.score);
+        localStorage.setItem('jessieMath_v2_scores', JSON.stringify(scores.slice(0, 10)));
+    }
+
+    function updateLeaderboard() {
+        let scores = JSON.parse(localStorage.getItem('jessieMath_v2_scores') || "[]");
+        const table = document.getElementById('leaderboard');
+        if(scores.length === 0) {
+            table.innerHTML = "<tr><td colspan='4' style='color:#999;'>暫無紀錄，快來挑戰吧！</td></tr>";
+            return;
+        }
+        let html = "<tr><th>排名</th><th>姓名</th><th>關卡/模式</th><th>分數</th></tr>";
+        scores.forEach((s, i) => {
+            let rank = i===0 ? "🥇" : (i===1 ? "🥈" : (i===2 ? "🥉" : i+1));
+            html += `<tr><td>${rank}</td><td>${s.name}</td><td>${s.level}<br><small>(${s.mode})</small></td><td>${s.score}</td></tr>`;
+        });
+        table.innerHTML = html;
+    }
+
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function exitToMenu() {
+        clearInterval(timerId);
+        if(feedbackTimer) clearTimeout(feedbackTimer);
+        showScreen('menu-screen');
+        updateLeaderboard();
+    }
+    function restartLevel() {
+        if(feedbackTimer) clearTimeout(feedbackTimer);
+        startGame(currentCategory, currentLevelName);
+    }
+    function pauseGame() { alert("暫停中，點擊確定繼續。"); }
+
+    document.addEventListener('keydown', (e) => {
+        const onStart = document.getElementById('start-screen').classList.contains('active');
+        if(onStart && e.key === 'Enter') goToMenu();
+    });
+</script>
+
+</body>
+</html>
